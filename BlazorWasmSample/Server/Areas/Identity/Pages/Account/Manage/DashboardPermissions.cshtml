@@ -1,0 +1,32 @@
+﻿@page
+@model BlazorWasmSample.Server.Areas.Identity.Pages.Account.Manage.DashboardPermissionsModel
+
+@{
+    ViewData["ActivePage"] = ManageNavPages.DashboardPermissions;
+}
+
+<h4>Dashboard permissions</h4>
+<div class="row">
+    <div class="col-md-6">
+        <form id="profile-form" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-check">
+                <input type="checkbox" asp-for="Input.AllowCreate" class="form-check-input" />
+                <label asp-for="Input.AllowCreate" class="form-check-label"></label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" asp-for="Input.AllowRead" class="form-check-input" />
+                <label asp-for="Input.AllowRead" class="form-check-label"></label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" asp-for="Input.AllowUpdate" class="form-check-input" />
+                <label asp-for="Input.AllowUpdate" class="form-check-label"></label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" asp-for="Input.AllowDelete" class="form-check-input" />
+                <label asp-for="Input.AllowDelete" class="form-check-label"></label>
+            </div>
+            <button id="update-profile-button" type="submit" class="btn btn-primary" style="margin-top: 15px;">Save</button>
+        </form>
+    </div>
+</div>

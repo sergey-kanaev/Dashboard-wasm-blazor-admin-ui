@@ -1,0 +1,7 @@
+.vs/**
+BlazorWasmSample/Client/bin/**
+BlazorWasmSample/Client/obj/**
+BlazorWasmSample/Server/bin/**
+BlazorWasmSample/Server/obj/**
+BlazorWasmSample/Shared/bin/**
+BlazorWasmSample/Shared/obj/**
