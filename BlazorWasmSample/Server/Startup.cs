@@ -1,6 +1,11 @@
+using BlazorWasmSample.Server.Controllers;
+using BlazorWasmSample.Server.DashboardServices;
 using BlazorWasmSample.Server.Data;
 using BlazorWasmSample.Server.Models;
+using DevExpress.AspNetCore;
+using DevExpress.DashboardAspNetCore;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,7 +13,9 @@ using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System.Linq;
 
 namespace BlazorWasmSample.Server {
@@ -37,8 +44,22 @@ namespace BlazorWasmSample.Server {
             services.AddAuthentication()
                 .AddIdentityServerJwt();
 
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IPostConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>());
+
+
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddResponseCompression();
+
+            services.AddHttpContextAccessor();
+
+            services.AddDevExpressControls();
+            services.AddScoped<CustomDashboardConfigurator>();
+            services.AddScoped<IApplicationUserProvider, ApplicationUserProvider>();
+            services.AddScoped<CustomConnectionStringProvider>();
+            services.AddScoped<CustomDashboardStorage>();
+            services.AddScoped<CustomDataSourceStorage>();
+            services.AddScoped<CustomDBSchemaProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +78,7 @@ namespace BlazorWasmSample.Server {
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+            app.UseDevExpressControls();
             app.UseRouting();
 
             app.UseIdentityServer();
@@ -64,6 +86,8 @@ namespace BlazorWasmSample.Server {
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => {
+                EndpointRouteBuilderExtension.MapDashboardRoute(endpoints, "dashboardControl", "CustomDashboard");
+
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");

@@ -16,25 +16,6 @@ namespace BlazorWasmSample.Server.Data {
         }
 
         public DbSet<DashboardModel> DashboardModels { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder builder) {
-            base.OnModelCreating(builder);
-
-            builder
-                .Entity<User_Dashboard>()
-                .HasKey(ud => new { ud.UserId, ud.DashboardId});
-            
-            builder
-                .Entity<User_Dashboard>()
-                .HasOne(ud => ud.User)
-                .WithMany(u => u.User_Dashboards)
-                .HasForeignKey(ud => ud.UserId);
-
-            builder
-                .Entity<User_Dashboard>()
-                .HasOne(ud => ud.Dashboard)
-                .WithMany(u => u.User_Dashboards)
-                .HasForeignKey(ud => ud.DashboardId);
-        }
+        public DbSet<ConnectionStringEntity> ConnectionStrings { get; set; }
     }
 }

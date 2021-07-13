@@ -1,0 +1,31 @@
+﻿@page "/dashboard"
+
+@*@using Microsoft.AspNetCore.Authorization*@
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using DevExpress.DashboardBlazor
+
+@inject IAccessTokenProvider tokenProvider;
+
+@*@attribute [Authorize]*@
+
+<DxDashboard Endpoint="dashboardControl" style="width: 100%; height: 900px;">
+    <DxBackendOptions RequestHttpHeaders="@headers"></DxBackendOptions>
+</DxDashboard>
+
+@code {
+    const string AuthorizationHeader = "Authorization";
+    const string BearerTokenPrefix = "Bearer";
+    Dictionary<string, string> headers = new Dictionary<string, string>();
+
+    public override async Task SetParametersAsync(ParameterView parameters) {
+        parameters.SetParameterProperties(this);
+
+        AccessToken token;
+        AccessTokenResult tokenResult = await tokenProvider.RequestAccessToken();
+        if(tokenResult.TryGetToken(out token)) {
+            headers[AuthorizationHeader] = $"{BearerTokenPrefix} {token.Value}";
+        }
+
+        await base.SetParametersAsync(ParameterView.Empty);
+    }
+}

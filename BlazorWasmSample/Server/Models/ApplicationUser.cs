@@ -14,6 +14,16 @@ namespace BlazorWasmSample.Server.Models {
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public ICollection<User_Dashboard> User_Dashboards { get; set; }
+        public ICollection<DashboardModel> Dashboards { get; set; }
+        public ICollection<ConnectionStringEntity> ConnectionStrings { get; set; }
+        public ICollection<DashboardDataSourceEntity> AvailableDashboardDataSources { get; set; }
+        public ICollection<DbTableEntity> AvailableDbTables { get; set; }
+
+        public ApplicationUser() {
+            Dashboards = new List<DashboardModel>();
+            ConnectionStrings = new List<ConnectionStringEntity>();
+            AvailableDashboardDataSources = new List<DashboardDataSourceEntity>();
+            AvailableDbTables = new List<DbTableEntity>();
+        }
     }
 }
