@@ -12,6 +12,8 @@ namespace BlazorWasmSample.Server.Areas.Identity.Pages.Account.Manage
 
         public static string DashboardPermissions => "DashboardPermissions";
 
+        public static string ConnectionStrings => "ConnectionStrings";
+
         public static string Email => "Email";
 
         public static string ChangePassword => "ChangePassword";
@@ -29,6 +31,8 @@ namespace BlazorWasmSample.Server.Areas.Identity.Pages.Account.Manage
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
         public static string DashboardPermissionsNavClass(ViewContext viewContext) => PageNavClass(viewContext, DashboardPermissions);
+
+        public static string ConnectionStringsNavClass(ViewContext viewContext) => PageNavClass(viewContext, ConnectionStrings);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 

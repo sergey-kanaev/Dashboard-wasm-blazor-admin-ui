@@ -23,7 +23,7 @@ namespace BlazorWasmSample.Server.DashboardServices {
         }
 
         public XDocument LoadDashboard(string dashboardID) {
-            if(user.AllowReadDashboard)
+            if(!user.AllowReadDashboard)
                 throw new ApplicationException("You are not authorized to view dashboards.");
 
             string xml = user
@@ -40,7 +40,7 @@ namespace BlazorWasmSample.Server.DashboardServices {
         }
 
         public string AddDashboard(XDocument dashboard, string dashboardName) {
-            if(user.AllowCreateDashboard)
+            if(!user.AllowCreateDashboard)
                 throw new ApplicationException("You are not authorized to create dashboards.");
 
             DashboardModel model = new DashboardModel() { Name = dashboardName, XmlContent = dashboard.ToString() };
@@ -50,7 +50,7 @@ namespace BlazorWasmSample.Server.DashboardServices {
         }
 
         public void SaveDashboard(string dashboardID, XDocument dashboard) {
-            if(user.AllowUpdateDashboard)
+            if(!user.AllowUpdateDashboard)
                 throw new ApplicationException("You are not authorized to modify dashboards.");
 
             var dashboardModel = user
@@ -65,7 +65,7 @@ namespace BlazorWasmSample.Server.DashboardServices {
         }
 
         public void DeleteDashboard(string dashboardID) {
-            if(user.AllowDeleteDashboard)
+            if(!user.AllowDeleteDashboard)
                 throw new ApplicationException("You are not authorized to delete dashboards.");
 
             var dashboardModel = user

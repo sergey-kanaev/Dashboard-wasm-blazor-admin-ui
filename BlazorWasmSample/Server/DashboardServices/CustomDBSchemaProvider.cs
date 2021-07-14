@@ -2,14 +2,17 @@
 using DevExpress.Xpo.DB;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace BlazorWasmSample.Server.DashboardServices {
     public class CustomDBSchemaProvider : DBSchemaProviderEx {
-        private readonly IEnumerable<string> availableDbTables;
+        public ReadOnlyCollection<string> AllTables = new ReadOnlyCollection<string>(new string[] { "Categories", "Products", "table3" });
+
+        private readonly IEnumerable<string> userDbTables;
 
         public CustomDBSchemaProvider(IApplicationUserProvider userProvider) : base() {
-            availableDbTables = userProvider
+            userDbTables = userProvider
                 .User
                 .AvailableDbTables
                 .Select(entity => entity.Name);
@@ -17,7 +20,7 @@ namespace BlazorWasmSample.Server.DashboardServices {
 
         public override DBTable[] GetTables(SqlDataConnection connection, params string[] tableList) {
             return base.GetTables(connection, tableList)
-                .Where(t => availableDbTables.Contains(t.Name))
+                .Where(t => userDbTables.Contains(t.Name))
                 .ToArray();
         }
     }

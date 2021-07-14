@@ -4,16 +4,14 @@ using BlazorWasmSample.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BlazorWasmSample.Server.Data.Migrations
+namespace BlazorWasmSample.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210713224522_migration3")]
-    partial class migration3
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,6 +34,21 @@ namespace BlazorWasmSample.Server.Data.Migrations
                     b.ToTable("ApplicationUserConnectionStringEntity");
                 });
 
+            modelBuilder.Entity("ApplicationUserDashboardDataSourceEntity", b =>
+                {
+                    b.Property<int>("AvailableDashboardDataSourcesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AvailableDashboardDataSourcesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserDashboardDataSourceEntity");
+                });
+
             modelBuilder.Entity("ApplicationUserDashboardModel", b =>
                 {
                     b.Property<int>("DashboardsId")
@@ -49,6 +62,21 @@ namespace BlazorWasmSample.Server.Data.Migrations
                     b.HasIndex("UsersId");
 
                     b.ToTable("ApplicationUserDashboardModel");
+                });
+
+            modelBuilder.Entity("ApplicationUserDbTableEntity", b =>
+                {
+                    b.Property<int>("AvailableDbTablesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AvailableDbTablesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserDbTableEntity");
                 });
 
             modelBuilder.Entity("BlazorWasmSample.Server.Models.ApplicationUser", b =>
@@ -162,17 +190,12 @@ namespace BlazorWasmSample.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("DashboardDataSourceEntity");
+                    b.ToTable("DataSources");
                 });
 
             modelBuilder.Entity("BlazorWasmSample.Server.Models.DashboardModel", b =>
@@ -200,15 +223,10 @@ namespace BlazorWasmSample.Server.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("DbTableEntity");
                 });
@@ -466,6 +484,21 @@ namespace BlazorWasmSample.Server.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ApplicationUserDashboardDataSourceEntity", b =>
+                {
+                    b.HasOne("BlazorWasmSample.Server.Models.DashboardDataSourceEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AvailableDashboardDataSourcesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ApplicationUserDashboardModel", b =>
                 {
                     b.HasOne("BlazorWasmSample.Server.Models.DashboardModel", null)
@@ -481,18 +514,19 @@ namespace BlazorWasmSample.Server.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.DashboardDataSourceEntity", b =>
+            modelBuilder.Entity("ApplicationUserDbTableEntity", b =>
                 {
-                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
-                        .WithMany("AvailableDashboardDataSources")
-                        .HasForeignKey("ApplicationUserId");
-                });
+                    b.HasOne("BlazorWasmSample.Server.Models.DbTableEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AvailableDbTablesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.DbTableEntity", b =>
-                {
                     b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
-                        .WithMany("AvailableDbTables")
-                        .HasForeignKey("ApplicationUserId");
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -544,13 +578,6 @@ namespace BlazorWasmSample.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("AvailableDashboardDataSources");
-
-                    b.Navigation("AvailableDbTables");
                 });
 #pragma warning restore 612, 618
         }

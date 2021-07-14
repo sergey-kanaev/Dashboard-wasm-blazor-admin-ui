@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BlazorWasmSample.Server.Data.Migrations
+namespace BlazorWasmSample.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210713140121_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20210714070159_migration3")]
+    partial class migration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,66 @@ namespace BlazorWasmSample.Server.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("ApplicationUserConnectionStringEntity", b =>
+                {
+                    b.Property<int>("ConnectionStringsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ConnectionStringsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserConnectionStringEntity");
+                });
+
+            modelBuilder.Entity("ApplicationUserDashboardDataSourceEntity", b =>
+                {
+                    b.Property<int>("AvailableDashboardDataSourcesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AvailableDashboardDataSourcesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserDashboardDataSourceEntity");
+                });
+
+            modelBuilder.Entity("ApplicationUserDashboardModel", b =>
+                {
+                    b.Property<int>("DashboardsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("DashboardsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserDashboardModel");
+                });
+
+            modelBuilder.Entity("ApplicationUserDbTableEntity", b =>
+                {
+                    b.Property<int>("AvailableDbTablesId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("AvailableDbTablesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("ApplicationUserDbTableEntity");
+                });
 
             modelBuilder.Entity("BlazorWasmSample.Server.Models.ApplicationUser", b =>
                 {
@@ -104,10 +164,48 @@ namespace BlazorWasmSample.Server.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("BlazorWasmSample.Server.Models.ConnectionStringEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ConnectionString")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ConnectionStrings");
+                });
+
+            modelBuilder.Entity("BlazorWasmSample.Server.Models.DashboardDataSourceEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DataSources");
+                });
+
             modelBuilder.Entity("BlazorWasmSample.Server.Models.DashboardModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -120,19 +218,19 @@ namespace BlazorWasmSample.Server.Data.Migrations
                     b.ToTable("DashboardModels");
                 });
 
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.User_Dashboard", b =>
+            modelBuilder.Entity("BlazorWasmSample.Server.Models.DbTableEntity", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("DashboardId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "DashboardId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("DashboardId");
-
-                    b.ToTable("User_Dashboard");
+                    b.ToTable("DbTableEntity");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -373,23 +471,64 @@ namespace BlazorWasmSample.Server.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.User_Dashboard", b =>
+            modelBuilder.Entity("ApplicationUserConnectionStringEntity", b =>
                 {
-                    b.HasOne("BlazorWasmSample.Server.Models.DashboardModel", "Dashboard")
-                        .WithMany("User_Dashboards")
-                        .HasForeignKey("DashboardId")
+                    b.HasOne("BlazorWasmSample.Server.Models.ConnectionStringEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ConnectionStringsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", "User")
-                        .WithMany("User_Dashboards")
-                        .HasForeignKey("UserId")
+                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApplicationUserDashboardDataSourceEntity", b =>
+                {
+                    b.HasOne("BlazorWasmSample.Server.Models.DashboardDataSourceEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AvailableDashboardDataSourcesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Dashboard");
+                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 
-                    b.Navigation("User");
+            modelBuilder.Entity("ApplicationUserDashboardModel", b =>
+                {
+                    b.HasOne("BlazorWasmSample.Server.Models.DashboardModel", null)
+                        .WithMany()
+                        .HasForeignKey("DashboardsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ApplicationUserDbTableEntity", b =>
+                {
+                    b.HasOne("BlazorWasmSample.Server.Models.DbTableEntity", null)
+                        .WithMany()
+                        .HasForeignKey("AvailableDbTablesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorWasmSample.Server.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -441,16 +580,6 @@ namespace BlazorWasmSample.Server.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("User_Dashboards");
-                });
-
-            modelBuilder.Entity("BlazorWasmSample.Server.Models.DashboardModel", b =>
-                {
-                    b.Navigation("User_Dashboards");
                 });
 #pragma warning restore 612, 618
         }

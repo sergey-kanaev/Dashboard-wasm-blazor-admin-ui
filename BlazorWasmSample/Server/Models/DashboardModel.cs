@@ -14,8 +14,6 @@ namespace BlazorWasmSample.Server.Models {
 
         public ICollection<ApplicationUser> Users { get; set; }
 
-        public DashboardModel() {
-            Users = new List<ApplicationUser>();
-        }
+        public DashboardModel() => Users = new List<ApplicationUser>();
     }
 }

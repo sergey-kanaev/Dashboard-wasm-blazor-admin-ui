@@ -17,5 +17,6 @@ namespace BlazorWasmSample.Server.Data {
 
         public DbSet<DashboardModel> DashboardModels { get; set; }
         public DbSet<ConnectionStringEntity> ConnectionStrings { get; set; }
+        public DbSet<DashboardDataSourceEntity> DataSources { get; set; }
     }
 }

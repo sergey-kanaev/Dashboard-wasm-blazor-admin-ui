@@ -26,6 +26,21 @@
                 <input type="checkbox" asp-for="Input.AllowDelete" class="form-check-input" />
                 <label asp-for="Input.AllowDelete" class="form-check-label"></label>
             </div>
+
+            <h5>Available dashboards</h5>
+            <select asp-for="Input.SelectedDashboards" asp-items="Model.Input.Dashboards" multiple></select>
+
+            <h5>Available data sources</h5>
+            <select asp-for="Input.SelectedDataSources" asp-items="Model.Input.DataSources" multiple></select>
+
+            <h5>Available connection strings</h5>
+            <select asp-for="Input.SelectedConnectionStrings" asp-items="Model.Input.ConnectionStrings" multiple></select>
+
+            <h5>Available DB tables</h5>
+            <select asp-for="Input.SelectedDbTables" asp-items="Model.Input.DbTables" multiple></select>
+
+            <br />
+
             <button id="update-profile-button" type="submit" class="btn btn-primary" style="margin-top: 15px;">Save</button>
         </form>
     </div>

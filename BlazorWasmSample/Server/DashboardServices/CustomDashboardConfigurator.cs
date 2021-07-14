@@ -11,7 +11,7 @@ namespace BlazorWasmSample.Server.DashboardServices {
             SetConnectionStringsProvider(connectionStringProvider);
             SetDashboardStorage(dashboardStorage);
             SetDataSourceStorage(dataSourceStorage);
-            SetDBSchemaProvider(dBSchemaProvider);
+           // SetDBSchemaProvider(dBSchemaProvider);
 
             user = userProvider.User;
 
